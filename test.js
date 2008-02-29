@@ -74,50 +74,63 @@ function tests(setname, fun) {
 }
 Deferred.register("tests", tests);
 
-function doctest (data) {
-	var testcode = [];
-	var testnums = 0;
-	var comments = [];
+function doctest (filename) {
 
-	data.replace(/\/(\*[\s\S]+?)\*\//g, function (_, m) {
-		comments.push(m.replace(/^\s*\*[ \n]/gm, ""));
-		return _;
-	})
-	comments.join("\n").replace(/Code:\n(?:    .+\n)+/g, function (code) {
-		try {
-		code = code.replace(/^Code:|^    /gm, "");
-		var codeblock = [];
-		var lines     = code.split(/\n/);
-		for (var i = 0; i < lines.length; i++) {
-			if (/^\/\/=> (.+)/.test(lines[i])) {
-				var expect = RegExp.$1;
-				testcode.push("expect(" + uneval(codeblock.join("\n")) + ", eval(" + uneval(expect) + "), eval(" + uneval(codeblock.join("\n")) + "));");
-				testnums++;
-				codeblock = [];
-			} else
-			if (/(.+) \/\/=> (.+)/.test(lines[i])) {
-				testcode.push(codeblock.join("\n"));
-				codeblock = [];
-				var expect = RegExp.$2;
-				var testcd = RegExp.$1;
-				testcode.push("expect(" + uneval(testcd) + ", eval(" + uneval(expect) + "), eval(" + uneval(testcd) + "));");
-				testnums++;
-			} else
-			if (/^\/\//.test(lines[i])) {
-				testcode.push(codeblock.join("\n"));
-				codeblock = [];
-			} else {
-				codeblock.push(lines[i]);
+	function _doctest (data) {
+		var testcode = [];
+		var testnums = 0;
+		var comments = [];
+
+		data.replace(/\/(\*[\s\S]+?)\*\//g, function (_, m) {
+			comments.push(m.replace(/^\s*\*[ \n]/gm, ""));
+			return _;
+		})
+		comments.join("\n").replace(/Code:\n(?:    .+\n)+/g, function (code) {
+			try {
+			code = code.replace(/^Code:|^    /gm, "");
+			var codeblock = [];
+			var lines     = code.split(/\n/);
+			for (var i = 0; i < lines.length; i++) {
+				if (/^\/\/=> (.+)/.test(lines[i])) {
+					var expect = RegExp.$1;
+					testcode.push("expect(" + uneval(codeblock.join("\n")) + ", eval(" + uneval(expect) + "), eval(" + uneval(codeblock.join("\n")) + "));");
+					testnums++;
+					codeblock = [];
+				} else
+				if (/(.+) \/\/=> (.+)/.test(lines[i])) {
+					testcode.push(codeblock.join("\n"));
+					codeblock = [];
+					var expect = RegExp.$2;
+					var testcd = RegExp.$1;
+					testcode.push("expect(" + uneval(testcd) + ", eval(" + uneval(expect) + "), eval(" + uneval(testcd) + "));");
+					testnums++;
+				} else
+				if (/^\/\//.test(lines[i])) {
+					testcode.push(codeblock.join("\n"));
+					codeblock = [];
+				} else {
+					codeblock.push(lines[i]);
+				}
 			}
-		}
-		testcode.push(codeblock.join("\n"));
-		} catch (e) { ng(e) }
-	});
+			testcode.push(codeblock.join("\n"));
+			} catch (e) { ng(e) }
+		});
 
-	return {
-		testcode: testcode.join("\n"),
-		testnums: testnums
-	};
+		return {
+			testcode: testcode.join("\n"),
+			testnums: testnums
+		};
+	}
+
+	return $.get(filename).next(function (data) {
+		var test = _doctest(data);
+		expects += test.testnums;
+		for (var i = 0; i < test.testnums; i++) testfuns.push("doctest");
+		msg("Loaded " + test.testnums + " doctest");
+		eval(test.testcode);
+	}).error(function (e) {
+		ng(e);
+	});
 }
 
 // ::Test::Start::
@@ -179,7 +192,8 @@ tests("StopIteration", function () {
 	}
 }).
 tests("cycle", function () {
-	var e = E([1, 2, 3]).cycle();
+	var e;
+	e = E([1, 2, 3]).cycle();
 	expect("1", 1, e.next());
 	expect("2", 2, e.next());
 	expect("3", 3, e.next());
@@ -187,12 +201,12 @@ tests("cycle", function () {
 	expect("2", 2, e.next());
 	expect("3", 3, e.next());
 
-	var e = E([1]).cycle();
+	e = E([1]).cycle();
 	expect("1", 1, e.next());
 	expect("1", 1, e.next());
 	expect("1", 1, e.next());
 
-	var e = E([1, 2]).cycle();
+	e = E([1, 2]).cycle();
 	expect("1", 1, e.next());
 	expect("2", 2, e.next());
 	expect("1", 1, e.next());
@@ -200,7 +214,7 @@ tests("cycle", function () {
 	expect("1", 1, e.next());
 	expect("2", 2, e.next());
 
-	var e = E(function () {
+	e = E(function () {
 		return Math.random();
 	}).cycle();
 	var n = 9;
@@ -227,26 +241,27 @@ tests("imap", function () {
 	}, "apply").toArray());
 }).
 tests("each", function () {
-	var ret = [];
+	var ret;
+	ret = [];
 	E([1, 2, 3]).each(function (i) {
 		ret.push(i);
 	});
 	expect("Basic", [1, 2, 3], ret);
 
-	var ret = [];
+	ret = [];
 	E([1, 2, 3]).each(function (i) {
 		ret.push(i);
 		throw Enumerator.StopIteration;
 	});
 	expect("Basic", [1], ret);
 
-	var ret = [];
+	ret = [];
 	E([[ 1 ], [ 2 ], [ 3 ]]).each(function (i) {
 		ret.push(i);
 	}, "apply");
 	expect("Basic", [1, 2, 3], ret);
 
-	var ret = [];
+	ret = [];
 	E([[ 1 ], [ 2 ], [ 3 ]]).each(function (i) {
 		ret.push(i);
 		throw Enumerator.StopIteration;
@@ -254,11 +269,12 @@ tests("each", function () {
 	expect("Basic", [1], ret);
 }).
 tests("toArray, to_a", function () {
-	var a = [1, 2, 3];
+	var a;
+	a = [1, 2, 3];
 	expect("toArray", a, E(a).toArray());
 	expect("to_a",    a, E(a).to_a());
 
-	var a = ["1", "2", "3"];
+	a = ["1", "2", "3"];
 	expect("toArray", a, E(a).toArray());
 	expect("to_a",    a, E(a).to_a());
 }).
@@ -386,12 +402,13 @@ tests("Application", function () {
 
 	var fizzbuzzA = [1, 2, "Fizz", 4, "Buzz", "Fizz", 7, 8, "Fizz", "Buzz", 11, "Fizz", 13, 14, "FizzBuzz", 16, 17, "Fizz", 19, "Buzz"];
 
-	var fizzbuzz  = E(1).countup().izip(E(["", "", "Fizz"]).cycle(), E(["", "", "", "", "Buzz"]).cycle()).itake(20).map(function (i) {
+	var fizzbuzz;
+	fizzbuzz = E(1).countup().izip(E(["", "", "Fizz"]).cycle(), E(["", "", "", "", "Buzz"]).cycle()).itake(20).map(function (i) {
 		return i[1] + i[2] || i[0];
 	});
 	expect("FizzBuzz", fizzbuzzA, fizzbuzz);
 
-	var fizzbuzz  = E(1).countup().itake(20).map(function (i) {
+	fizzbuzz  = E(1).countup().itake(20).map(function (i) {
 		return (i % 3 == 0) ? (i % 5 == 0) ? "FizzBuzz" : "Fizz" :
 		                      (i % 5 == 0) ? "Buzz"     :      i ;
 	});
@@ -413,15 +430,7 @@ tests("Application", function () {
 	expect("Fibonacci", [6765, 10946, 17711, 28657, 46368], f.take(5));
 }).
 tests("DocTest", function () {
-	return $.get("jsenumerator.js").next(function (data) {
-		var test = doctest(data);
-		expects += test.testnums;
-		for (var i = 0; i < test.testnums; i++) testfuns.push("doctest");
-		msg("Loaded " + test.testnums + " doctest");
-		eval(test.testcode);
-	}).error(function (e) {
-		ng(e);
-	});
+	return doctest("jsenumerator.js");
 }).
 next(function () { msg("End") });
 

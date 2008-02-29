@@ -35,6 +35,7 @@ function show (msg, expect, result) {
 function msg (m) {
 	print(m);
 }
+log = msg;
 
 function ok () {
 	show.apply("ok", arguments);
@@ -45,7 +46,7 @@ function ng () {
 }
 
 function expect (msg, expect, result) {
-	if (expect == result) {
+	if (uneval(expect) == uneval(result)) {
 		show.apply("ok", arguments);
 	} else {
 		show.apply("ng", arguments);
@@ -62,6 +63,88 @@ function color (code) {
 	].join("");
 }
 
+function tests(setname, fun) {
+	msg(setname);
+	header();
+	return next(fun).error(function (e) {
+		ng(e);
+	});
+}
+
+function header () {
+}
+
+function next (f) {
+	f();
+	var r = {
+		next : arguments.callee,
+		error : function () {
+			return r;
+		},
+		tests : tests
+	};
+	return r;
+}
+
+function doctest (filename) {
+
+	function _doctest (data) {
+		var testcode = [];
+		var testnums = 0;
+		var comments = [];
+
+		data.replace(/\/(\*[\s\S]+?)\*\//g, function (_, m) {
+			comments.push(m.replace(/^\s*\*[ \n]/gm, ""));
+			return _;
+		})
+		comments.join("\n").replace(/Code:\n(?:    .+\n)+/g, function (code) {
+			try {
+			code = code.replace(/^Code:|^    /gm, "");
+			var codeblock = [];
+			var lines     = code.split(/\n/);
+			for (var i = 0; i < lines.length; i++) {
+				if (/^\/\/=> (.+)/.test(lines[i])) {
+					var expect = RegExp.$1;
+					testcode.push("expect(" + uneval(codeblock.join("\n")) + ", eval(" + uneval(expect) + "), eval(" + uneval(codeblock.join("\n")) + "));");
+					testnums++;
+					codeblock = [];
+				} else
+				if (/(.+) \/\/=> (.+)/.test(lines[i])) {
+					testcode.push(codeblock.join("\n"));
+					codeblock = [];
+					var expect = RegExp.$2;
+					var testcd = RegExp.$1;
+					testcode.push("expect(" + uneval(testcd) + ", eval(" + uneval(expect) + "), eval(" + uneval(testcd) + "));");
+					testnums++;
+				} else
+				if (/^\/\//.test(lines[i])) {
+					testcode.push(codeblock.join("\n"));
+					codeblock = [];
+				} else {
+					codeblock.push(lines[i]);
+				}
+			}
+			testcode.push(codeblock.join("\n"));
+			} catch (e) { ng(e) }
+		});
+
+		return {
+			testcode: testcode.join("\n"),
+			testnums: testnums
+		};
+	}
+
+	return next(function (data) {
+		data = readFile("./jsenumerator.js");
+		var test = _doctest(data);
+		expects += test.testnums;
+		for (var i = 0; i < test.testnums; i++) testfuns.push("doctest");
+		msg("Loaded " + test.testnums + " doctest");
+		eval(test.testcode);
+	}).error(function (e) {
+		ng(e);
+	});
+}
 // run tests
 eval(data);
 
@@ -156,6 +239,44 @@ addFinalizer(function () {
 			print(uneval(a));
 		}
 	};
+
+	Global.uneval = function  (o) {
+		switch (typeof o) {
+			case "undefined" : return "(void 0)";
+			case "boolean"   : return String(o);
+			case "number"    : return String(o);
+			case "string"    : return '"' + o.replace(/[\s"'\\]/ig, function (c) {
+					return '\\u' + (c.charCodeAt(0) + 0x10000).toString(16).slice(1);
+				}) + '"';
+			case "function"  : return "(" + o.toString() + ")";
+			case "object"    :
+				if (o == null) return "null";
+				var type = Object.prototype.toString.call(o).match(/\[object (.+)\]/);
+				if (!type) throw TypeError("unknown type:"+o);
+				switch (type[1]) {
+					case "Array":
+						var ret = [];
+						for (var i = 0; i < o.length; i++) ret.push(arguments.callee(o[i]));
+						return "[" + ret.join(", ") + "]";
+					case "Object":
+						var ret = [];
+						for (var i in o) {
+							if (!o.hasOwnProperty(i)) continue;
+							ret.push(arguments.callee(i) + ":" + arguments.callee(o[i]));
+						}
+						return "({" + ret.join(", ") + "})";
+					case "Number":
+						return "(new Number(" + o + "))";
+					case "String":
+						return "(new String(" + arguments.callee(o) + "))";
+					case "Date":
+						return "(new Date(" + o.getTime() + "))";
+					default:
+						if (o.toSource) return o.toSource();
+						throw TypeError("unknown type:"+o);
+				}
+		}
+	}
 
 	// run process
 	while (runQueue.length) {

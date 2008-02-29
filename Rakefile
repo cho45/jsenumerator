@@ -33,7 +33,7 @@ task :default => [:test]
 
 desc "Test JSDeferred"
 task :test => RELEASES do
-	sh %{rhino -opt 0 -w -strict test.js jsenumerator.js}
+	sh %{rhino -opt 0 -w -strict test-rhino.js jsenumerator.js}
 end
 
 desc "Create all release files"
