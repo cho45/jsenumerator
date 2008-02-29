@@ -403,9 +403,16 @@ tests("Application", function () {
 	var fizzbuzzA = [1, 2, "Fizz", 4, "Buzz", "Fizz", 7, 8, "Fizz", "Buzz", 11, "Fizz", 13, 14, "FizzBuzz", 16, 17, "Fizz", 19, "Buzz"];
 
 	var fizzbuzz;
-	fizzbuzz = E(1).countup().izip(E(["", "", "Fizz"]).cycle(), E(["", "", "", "", "Buzz"]).cycle()).itake(20).map(function (i) {
-		return i[1] + i[2] || i[0];
-	});
+
+	fizzbuzz = E(1)
+		.countup()
+		.izip(
+			E(["", "", "Fizz"]).cycle(),
+			E(["", "", "", "", "Buzz"]).cycle())
+		.imap(function (i) {
+			return i[1] + i[2] || i[0];
+		})
+		.take(20);
 	expect("FizzBuzz", fizzbuzzA, fizzbuzz);
 
 	fizzbuzz  = E(1).countup().itake(20).map(function (i) {
