@@ -197,9 +197,9 @@ benchmark.logger = {
 		this.init();
 		var div = document.createElement("div");
 		div.appendChild(document.createTextNode(m));
-		this.parent.scrollOffset =  this.parent.scrollHeight;
+		this.parent.scrollTop =  this.parent.scrollHeight;
 		this.parent.style.display = "block";
-		this.parent.insertBefore(div, this.parent.firstChild);
+		this.parent.appendChild(div);
 		if (window.console) console.log(m);
 	},
 
