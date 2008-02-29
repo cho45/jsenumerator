@@ -23,18 +23,18 @@ function benchmark (name, set) {
 	return next(function () {
 		logger.log("Prepare... " + name);
 	}).
-	loop(9, function () {
-		// 誤差判定用に何回かダミーを実行し中央値をとっておき、
-		// 各プロセス毎にこれを実行しなおし、大きく離れていたら再計測する。
-		// (殆ど Opera 用)
-		constant_dummy.push(dummyfun());
-	}).
-	next(function () {
-		constant_dummy = constant_dummy.sort(function (a, b) {
-			return a - b;
-		})[Math.floor(constant_dummy.length / 2)];
-		logger.log("constant (for detecting error):" + constant_dummy);
-	}).
+//	loop(9, function () {
+//		// 誤差判定用に何回かダミーを実行し中央値をとっておき、
+//		// 各プロセス毎にこれを実行しなおし、大きく離れていたら再計測する。
+//		// (殆ど Opera 用)
+//		constant_dummy.push(dummyfun());
+//	}).
+//	next(function () {
+//		constant_dummy = constant_dummy.sort(function (a, b) {
+//			return a - b;
+//		})[Math.floor(constant_dummy.length / 2)];
+//		logger.log("constant (for detecting error):" + constant_dummy);
+//	}).
 	next(function () {
 		function calc (descfun) {
 			var desc = descfun[0];
@@ -56,10 +56,10 @@ function benchmark (name, set) {
 				var tm = benchmark.timeCost() / times;
 				logger.log('result : ' + (t - (bc + tm)) + '[ms]');
 
-				if (Math.abs(dummyfun() - constant_dummy) > constant_dummy / 10) {
-					logger.log('detect some error. retry this test');
-					return call(arguments.callee, descfun);
-				}
+//				if (Math.abs(dummyfun() - constant_dummy) > constant_dummy / 10) {
+//					logger.log('detect some error. retry this test');
+//					return call(arguments.callee, descfun);
+//				}
 
 				results.push({
 					desc : desc,
@@ -93,6 +93,7 @@ function benchmark (name, set) {
 
 		// show results with table
 		var table = document.createElement("table");
+		var tbody = document.createElement("tbody");
 		var capti = document.createElement("caption");
 		capti.appendChild(document.createTextNode(name));
 		table.appendChild(capti);
@@ -123,7 +124,7 @@ function benchmark (name, set) {
 			var td_time = document.createElement("td");
 			var sp_time = document.createElement("div");
 			sp_time.appendChild(document.createTextNode(r.time));
-			sp_time.style.width = ((r.time / max.time) * 100) + "%";
+			sp_time.style.width      = ((r.time / max.time) * 100) + "%";
 			sp_time.style.background = "#ccc";
 			sp_time.style.padding    = "0.5em 0.5em";
 			sp_time.style.border     = "1px solid #000";
@@ -132,8 +133,9 @@ function benchmark (name, set) {
 
 			tr.appendChild(td_time);
 
-			table.appendChild(tr);
+			tbody.appendChild(tr);
 		}
+		table.appendChild(tbody);
 		document.body.appendChild(table);
 	}).
 	error(function (e) {

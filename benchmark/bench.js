@@ -47,7 +47,7 @@ benchmark("10element loop", {
 				i;
 			});
 		}
-	},
+	}
 }).
 benchmark("cycle and imap and toArray", {
 	"MochiKit" : function () {
@@ -73,7 +73,7 @@ benchmark("cycle and imap and toArray", {
 				return t * t;
 			}).take(20);
 		}
-	},
+	}
 }).
 benchmark("reduce", {
 	"MochiKit (reduce only)" : function () {
@@ -115,7 +115,7 @@ benchmark("reduce", {
 				return r + i;
 			});
 		}
-	},
+	}
 }).
 benchmark("map", {
 	"MochiKit" : function () {
@@ -152,7 +152,7 @@ benchmark("map", {
 				return t * t;
 			});
 		}
-	},
+	}
 }).
 next(function () {
 	"end"
