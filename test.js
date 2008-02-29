@@ -409,9 +409,9 @@ tests("Application", function () {
 		.izip(
 			E(["", "", "Fizz"]).cycle(),
 			E(["", "", "", "", "Buzz"]).cycle())
-		.imap(function (i) {
-			return i[1] + i[2] || i[0];
-		})
+		.imap(function (num, fizz, buzz) {
+			return fizz + buzz || num;
+		}, "apply")
 		.take(20);
 	expect("FizzBuzz", fizzbuzzA, fizzbuzz);
 
