@@ -435,6 +435,24 @@ tests("Application", function () {
 	expect("Fibonacci", [0, 1, 1, 2, 3, 5, 8, 13, 21, 34], f.take(10));
 	expect("Fibonacci", [55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181], f.take(10));
 	expect("Fibonacci", [6765, 10946, 17711, 28657, 46368], f.take(5));
+
+
+//	Enumerator.prototype.dloop = function (fun, n) {
+//		var enum = this;
+//		if (!n) n = 1;
+//		return next(function () {
+//			for (var  i = 0; i < n; i++) {
+//				fun.call(enum, enum.next());
+//			}
+//			return call(arguments.callee);
+//		}).error(function (e) {
+//			if (e != Enumerator.StopIteration) throw e;
+//		});
+//	};
+//
+//	return fib().itake(20).dloop(function (i) {
+//		log(i);
+//	});
 }).
 tests("DocTest", function () {
 	return doctest("jsenumerator.js");
