@@ -167,8 +167,8 @@ tests("Constructor Tests", function () {
 		expect("arguments", [1, 2, 3], E(arguments).toArray());
 	})(1, 2, 3);
 
-	expect("nodelist", ["[object HTMLHtmlElement]"], E(document.getElementsByTagName("html")).imap(function (i) {
-		return String(i);
+	expect("nodelist", ["HTML"], E(document.getElementsByTagName("html")).imap(function (i) {
+		return i.tagName.toUpperCase();
 	}).take(1));
 
 	var e = E(function () {
