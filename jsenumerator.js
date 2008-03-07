@@ -73,7 +73,7 @@ Enumerator.prototype = {
 				this.initWithFunction(arguments[0]);
 			} else
 			if (typeof arguments[0] == "object") {
-				if (arguments[0].hasOwnProperty("length")) {
+				if (arguments[0].length) {
 					this.initWithArray(arguments[0]);
 				} else
 				if (arguments[0] instanceof Enumerator) {
