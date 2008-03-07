@@ -233,16 +233,16 @@ tests("map", function () {
 
 	expect("apply", [3, 5], E([[1, 2], [2, 3]]).map(function (x, y) {
 		return x + y;
-	}, "apply"));
+	}));
 }).
 tests("imap", function () {
 	expect("Basic", [1, 4, 9], E([1, 2, 3]).imap(function (i) {
 		return i * i;
 	}).toArray());
 
-	expect("apply", [1, 4, 9], E([[1], [2], [3]]).imap(function (i) {
+	expect("apply", [1, 4, 9], E([[1, "a"], [2, "b"], [3, "c"]]).imap(function (i, _) {
 		return i * i;
-	}, "apply").toArray());
+	}).toArray());
 }).
 tests("each", function () {
 	var ret;
@@ -260,16 +260,16 @@ tests("each", function () {
 	expect("Basic", [1], ret);
 
 	ret = [];
-	E([[ 1 ], [ 2 ], [ 3 ]]).each(function (i) {
+	E([[ 1, "a" ], [ 2, "b"], [ 3, "c" ]]).each(function (i, _) {
 		ret.push(i);
-	}, "apply");
+	});
 	expect("Basic", [1, 2, 3], ret);
 
 	ret = [];
-	E([[ 1 ], [ 2 ], [ 3 ]]).each(function (i) {
+	E([[ 1, "a" ], [ 2, "b"], [ 3, "c" ]]).each(function (i, _) {
 		ret.push(i);
 		throw Enumerator.StopIteration;
-	}, "apply");
+	});
 	expect("Basic", [1], ret);
 }).
 tests("toArray, to_a", function () {
@@ -296,22 +296,22 @@ tests("iselect, ifilter", function () {
 		return i > 3;
 	}).toArray());
 
-	expect("Basic", [[ 4 ], [ 5 ]], E([[ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ]]).iselect(function (i) {
+	expect("Basic", [[ 4 ], [ 5 ]], E([[ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ]]).iselect(function (i, _) {
 		return i > 3;
-	}, "apply").toArray());
+	}).toArray());
 
-	expect("Basic", [[ 4 ], [ 5 ]], E([[ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ]]).ifilter(function (i) {
+	expect("Basic", [[ 4 ], [ 5 ]], E([[ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ]]).ifilter(function (i, _) {
 		return i > 3;
-	}, "apply").toArray());
+	}).toArray());
 }).
 tests("find", function () {
 	expect("Basic", 4, E([1, 2, 3, 4, 5]).find(function (i) {
 		return i > 3;
 	}));
 
-	expect("apply", [ 4 ], E([[ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ]]).find(function (i) {
+	expect("apply", [ 4, "d" ], E([[ 1, "a"], [ 2, "b" ], [ 3, "c" ], [ 4, "d" ], [ 5, "e" ]]).find(function (i, _) {
 		return i > 3;
-	}, "apply"));
+	}));
 }).
 tests("reduce", function () {
 	expect("Basic", 6, E([1, 2, 3]).reduce(function (r, i) {
@@ -401,7 +401,7 @@ tests("Application", function () {
 		[[["a", 1], 0], [["c", 3], 2]],
 		E(["a", "b", "c", "d"]).izip(E([1, 2, 3]).cycle()).withIndex().iselect(function (item, index) {
 			return index % 2 == 0;
-		}, "apply").toArray()
+		}).toArray()
 	);
 
 	var fizzbuzzA = [1, 2, "Fizz", 4, "Buzz", "Fizz", 7, 8, "Fizz", "Buzz", 11, "Fizz", 13, 14, "FizzBuzz", 16, 17, "Fizz", 19, "Buzz"];
@@ -415,7 +415,7 @@ tests("Application", function () {
 			E(["", "", "", "", "Buzz"]).cycle())
 		.imap(function (num, fizz, buzz) {
 			return fizz + buzz || num;
-		}, "apply")
+		})
 		.take(20);
 	expect("FizzBuzz", fizzbuzzA, fizzbuzz);
 

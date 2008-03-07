@@ -162,15 +162,15 @@ Enumerator.prototype = {
 	 * Code:
 	 *     E(1, 2, 3).map(function (i) { return i * i }); //=> [1, 4, 9]
 	 */
-	map : function (fun, apply) {
+	map : function (fun) {
 		var ret = [];
 		try {
 			if (this.array) {
 				for (; this.pos < this.array.length; this.pos++) {
-					ret.push(fun[apply || "call"](this, this.array[this.pos]));
+					ret.push(this._call(fun, this.array[this.pos]));
 				}
 			} else {
-				while (1) ret.push(fun[apply || "call"](this, this.next()));
+				while (1) ret.push(this._call(fun, this.next()));
 			}
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -186,10 +186,10 @@ Enumerator.prototype = {
 	 *     E(1, 2, 3).imap(function (i) { return i * i }).toArray(); //=> [1, 4, 9]
 	 *     E(1, 2, 3).cycle().imap(function (i) { return i * i }).take(6); //=> [1, 4, 9, 1, 4, 9]
 	 */
-	imap : function (fun, apply) {
+	imap : function (fun) {
 		var self = this;
 		return Enumerator(function () {
-			return fun[apply || "call"](this, self.next())
+			return this._call(fun, self.next())
 		});
 	},
 
@@ -224,12 +224,12 @@ Enumerator.prototype = {
 	 *     }).take(10);
 	 *     //=> [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
 	 */
-	iselect : function (fun, apply) {
+	iselect : function (fun) {
 		var self = this;
 		return Enumerator(function () {
 			do {
 				var val = self.next();
-			} while (!fun[apply || "call"](this, val));
+			} while (!this._call(fun, val));
 			return val;
 		});
 	},
@@ -249,7 +249,7 @@ Enumerator.prototype = {
 	find : function (fun, apply) {
 		do {
 			var ret = this.next();
-		} while (!fun[apply || "call"](this, ret));
+		} while (!this._call(fun, ret));
 		return ret;
 	},
 
@@ -340,7 +340,7 @@ Enumerator.prototype = {
 	 *     E().countup().itake(10).drop(2); //=> [2, 3, 4, 5, 6, 7, 8, 9]
 	 *
 	 */
-	itake : function (a, apply) {
+	itake : function (a) {
 		var self = this;
 		if (typeof(a) == "number") { // take
 			var i = 0;
@@ -354,7 +354,7 @@ Enumerator.prototype = {
 		if (typeof(a) == "function") { // takewhile
 			return Enumerator(function () {
 				var ret = self.next();
-				if (a[apply || "call"](this, ret))
+				if (this._call(a, ret))
 					return ret;
 				else
 					throw Enumerator.StopIteration;
@@ -370,8 +370,8 @@ Enumerator.prototype = {
 	 *
 	 * Receiver must be finite.
 	 */
-	take : function (a, apply) {
-		return this.itake(a, apply).toArray();
+	take : function (a) {
+		return this.itake(a).toArray();
 	},
 
 	/* function Enumerator.prototype.idrop (n) //=> Enumerator
@@ -381,14 +381,14 @@ Enumerator.prototype = {
 	 * Code:
 	 *     E().countup().idrop(2).take(10); //=> [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 	 */
-	idrop : function (a, apply) {
+	idrop : function (a) {
 		var self = this, i;
 		if (typeof(a) == "number") {   // drop
 			for (i = 0; i < a; i++) this.next();
 			return this;
 		} else
 		if (typeof(a) == "function") { // dropwhile
-			while (a[apply || "call"](this, i = this.next())) true;
+			while (this._call(a, i = this.next())) true;
 			return Enumerator(function () {
 				this.next = self.next;
 				return i;
@@ -405,8 +405,8 @@ Enumerator.prototype = {
 	 *
 	 * Receiver must be finite.
 	 */
-	drop : function (a, apply) {
-		return this.idrop(a, apply).toArray();
+	drop : function (a) {
+		return this.idrop(a).toArray();
 	},
 
 	/* function Enumerator.prototype.every (fun) //=> Boolean
@@ -422,9 +422,9 @@ Enumerator.prototype = {
 	 *
 	 * Receiver must be finite.
 	 */
-	every : function (fun, apply) {
+	every : function (fun) {
 		try {
-			while (!(fun[apply || "call"](this, this.next()) === false)) 1;
+			while (!(this._call(fun, this.next()) === false)) 1;
 			return false;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -445,9 +445,9 @@ Enumerator.prototype = {
 	 *
 	 * Receiver must be finite.
 	 */
-	some : function (fun, apply) {
+	some : function (fun) {
 		try {
-			while (!(fun[apply || "call"](this, this.next()) === true)) 1;
+			while (!(this._call(fun, this.next()) === true)) 1;
 			return true;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -463,7 +463,7 @@ Enumerator.prototype = {
 	 *     E("a", "b", "c").withIndex().each(function (item, index) {
 	 *         log(item);  // a, b, c
 	 *         log(index); // 0, 1, 2
-	 *     }, "apply");
+	 *     });
 	 */
 	withIndex : function (start) {
 		return this.izip(E(start || 0).countup());
@@ -480,6 +480,11 @@ Enumerator.prototype = {
 	countup : function () {
 		var start = this.next() || 0;
 		return Enumerator(function () { return start++ });
+	},
+
+	_call : function (fun, arg) {
+		var m = (fun.toString().split("{",2)[0].indexOf(",") == -1) ? "call" : "apply";
+		return fun[m](this, arg);
 	}
 };
 
