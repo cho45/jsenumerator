@@ -69,13 +69,13 @@ Enumerator.prototype = {
 		if (arguments.length == 0) {
 			this.initWithArray([]);
 		} else {
+			if (arguments[0] && arguments[0].length) {
+				this.initWithArray(arguments[0]);
+			} else
 			if (typeof arguments[0] == "function") {
 				this.initWithFunction(arguments[0]);
 			} else
 			if (typeof arguments[0] == "object") {
-				if (arguments[0].length) {
-					this.initWithArray(arguments[0]);
-				} else
 				if (arguments[0] instanceof Enumerator) {
 					return arguments[0];
 				} else {
