@@ -163,14 +163,14 @@ Enumerator.prototype = {
 	 *     E(1, 2, 3).map(function (i) { return i * i }); //=> [1, 4, 9]
 	 */
 	map : function (fun) {
-		var ret = [];
+		var ret = [], fun = this._fun(fun);
 		try {
 			if (this.array) {
 				for (; this.pos < this.array.length; this.pos++) {
-					ret.push(this._call(fun, this.array[this.pos]));
+					ret.push(fun(this.array[this.pos]));
 				}
 			} else {
-				while (1) ret.push(this._call(fun, this.next()));
+				while (1) ret.push(fun(this.next()));
 			}
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -187,9 +187,9 @@ Enumerator.prototype = {
 	 *     E(1, 2, 3).cycle().imap(function (i) { return i * i }).take(6); //=> [1, 4, 9, 1, 4, 9]
 	 */
 	imap : function (fun) {
-		var self = this;
+		var self = this, fun = this._fun(fun);;
 		return Enumerator(function () {
-			return this._call(fun, self.next())
+			return fun(self.next())
 		});
 	},
 
@@ -225,11 +225,11 @@ Enumerator.prototype = {
 	 *     //=> [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
 	 */
 	iselect : function (fun) {
-		var self = this;
+		var self = this, fun = this._fun(fun);
 		return Enumerator(function () {
 			do {
 				var val = self.next();
-			} while (!this._call(fun, val));
+			} while (!fun(val));
 			return val;
 		});
 	},
@@ -246,10 +246,11 @@ Enumerator.prototype = {
 	 *
 	 * Receiver must be finite.
 	 */
-	find : function (fun, apply) {
+	find : function (fun) {
+		fun = this._fun(fun);
 		do {
 			var ret = this.next();
-		} while (!this._call(fun, ret));
+		} while (!fun(ret));
 		return ret;
 	},
 
@@ -352,14 +353,14 @@ Enumerator.prototype = {
 			});
 		} else
 		if (typeof(a) == "function") { // takewhile
+			a = this._fun(a);
 			return Enumerator(function () {
 				var ret = self.next();
-				if (this._call(a, ret))
+				if (a(ret))
 					return ret;
 				else
 					throw Enumerator.StopIteration;
 			});
-			return ret;
 		}
 	},
 
@@ -388,7 +389,8 @@ Enumerator.prototype = {
 			return this;
 		} else
 		if (typeof(a) == "function") { // dropwhile
-			while (this._call(a, i = this.next())) true;
+			a = this._fun(a);
+			while (a(i = this.next())) true;
 			return Enumerator(function () {
 				this.next = self.next;
 				return i;
@@ -423,8 +425,9 @@ Enumerator.prototype = {
 	 * Receiver must be finite.
 	 */
 	every : function (fun) {
+		fun = this._fun(fun);
 		try {
-			while (!(this._call(fun, this.next()) === false)) 1;
+			while (!(fun(this.next()) === false)) 1;
 			return false;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -446,8 +449,9 @@ Enumerator.prototype = {
 	 * Receiver must be finite.
 	 */
 	some : function (fun) {
+		fun = this._fun(fun);
 		try {
-			while (!(this._call(fun, this.next()) === true)) 1;
+			while (!(fun(this.next()) === true)) 1;
 			return true;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -482,9 +486,9 @@ Enumerator.prototype = {
 		return Enumerator(function () { return start++ });
 	},
 
-	_call : function (fun, arg) {
-		var m = (fun.toString().split("{",2)[0].indexOf(",") == -1) ? "call" : "apply";
-		return fun[m](this, arg);
+	_fun : function (fun) {
+		var self = this, m = (fun.toString().split("{",2)[0].indexOf(",") == -1) ? "call" : "apply";
+		return function (arg) { return fun[m](self, arg); };
 	}
 };
 
