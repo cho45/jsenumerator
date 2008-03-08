@@ -390,6 +390,14 @@ tests("withIndex", function () {
 	expect("Basic", [["a", 0], ["b", 1], ["c", 2]], E(["a", "b", "c"]).withIndex().toArray());
 	expect("Basic", [["a", 10], ["b", 11], ["c", 12]], E(["a", "b", "c"]).withIndex(10).toArray());
 }).
+tests("stop", function () {
+	expect("Basic", ["a"], E(["a", "b", "c"]).map(function (i) {
+		if (i == "b")
+			this.stop();
+		else
+			return i;
+	}));
+}).
 tests("Application", function () {
 	expect("cycle.imap.take", [1, 4, 9, 1, 4, 9], E([1, 2, 3]).cycle().imap(function (i) {
 		return i * i;

@@ -486,9 +486,27 @@ Enumerator.prototype = {
 		return Enumerator(function () { return start++ });
 	},
 
+	/* function Enumerator.prototype.stop () //=> throw Enumerator.StopIteration
+	 *
+	 * This is a convenient function for stop iteration.
+	 *
+	 * Code:
+	 *    E(1, 2, 3).map(function (i) {
+	 *        if (i == 2) this.stop();
+	 *    });
+	 *    //=> [1, 2]
+	 *
+	 */
+	stop : function () {
+		throw Enumerator.StopIteration;
+	},
+
 	_fun : function (fun) {
-		var self = this, m = (fun.toString().split("{",2)[0].indexOf(",") == -1) ? "call" : "apply";
-		return function (arg) { return fun[m](self, arg); };
+		var self = this;
+		if (fun.toString().split("{",2)[0].indexOf(",") == -1)
+			return function (arg) { return fun.call(self, arg) };
+		else
+			return function (arg) { return fun.apply(self, arg) };
 	}
 };
 
