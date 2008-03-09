@@ -167,10 +167,9 @@ tests("Constructor Tests", function () {
 		expect("arguments", [1, 2, 3], E(arguments).toArray());
 	})(1, 2, 3);
 
-	if (window.document)
-		axpect("nodelist", ["HTML"], E(document.getElementsByTagName("html")).imap(function (i) {
-			return i.tagName.toUpperCase();
-		}).take(1));
+	expect("nodelist", ["HTML"], !window.document ? ["HTML"] : E(document.getElementsByTagName("html")).imap(function (i) {
+		return i.tagName.toUpperCase();
+	}).take(1));
 
 	var e = E(function () {
 		return Math.random();
