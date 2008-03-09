@@ -174,10 +174,19 @@ tests("Constructor Tests", function () {
 	var e = E(function () {
 		return Math.random();
 	});
-	var n = 9;
-	if (( n = e.next() ) < 1) ok("random: "+n);
-	if (( n = e.next() ) < 1) ok("random: "+n);
-	if (( n = e.next() ) < 1) ok("random: "+n);
+	var n = e.next(), nn;
+
+	nn = e.next();
+	expect("random: "+ [n, nn].join(", "), false, nn == n);
+	n  = nn;
+
+	nn = e.next();
+	expect("random: "+ [n, nn].join(", "), false, nn == n);
+	n  = nn;
+
+	nn = e.next();
+	expect("random: "+ [n, nn].join(", "), false, nn == n);
+	n  = nn;
 }).
 tests("StopIteration", function () {
 	var e = E([1, 2, 3]);
