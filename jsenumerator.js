@@ -503,10 +503,10 @@ Enumerator.prototype = {
 
 	_fun : function (fun) {
 		var self = this;
-		if (fun.toString().split("{", 2)[0].indexOf(",") == -1)
-			return function (arg) { return fun.call(self, arg) };
-		else
+		if (fun.length > 1)
 			return function (arg) { return fun.apply(self, arg) };
+		else
+			return function (arg) { return fun.call(self, arg) };
 	}
 };
 
