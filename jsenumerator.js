@@ -163,11 +163,11 @@ Enumerator.prototype = {
 	 *     E(1, 2, 3).map(function (i) { return i * i }); //=> [1, 4, 9]
 	 */
 	map : function (fun) {
-		var ret = [], fun = this._fun(fun);
+		var ret = [];
 		try {
 			if (this.array) {
 				for (; this.pos < this.array.length; this.pos++) {
-					ret.push(fun(this.array[this.pos]));
+					ret.push(fun[fun.length > 1 ? "apply" : "call"](this, this.array[this.pos]));
 				}
 			} else {
 				while (1) ret.push(fun(this.next()));
@@ -187,9 +187,9 @@ Enumerator.prototype = {
 	 *     E(1, 2, 3).cycle().imap(function (i) { return i * i }).take(6); //=> [1, 4, 9, 1, 4, 9]
 	 */
 	imap : function (fun) {
-		var self = this, fun = this._fun(fun);;
+		var self = this;
 		return Enumerator(function () {
-			return fun(self.next())
+			return fun[fun.length > 1 ? "apply" : "call"](this, self.next());
 		});
 	},
 
@@ -225,11 +225,11 @@ Enumerator.prototype = {
 	 *     //=> [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
 	 */
 	iselect : function (fun) {
-		var self = this, fun = this._fun(fun);
+		var self = this;
 		return Enumerator(function () {
 			do {
 				var val = self.next();
-			} while (!fun(val));
+			} while (!fun[fun.length > 1 ? "apply" : "call"](this, val));
 			return val;
 		});
 	},
@@ -247,10 +247,9 @@ Enumerator.prototype = {
 	 * Receiver must be finite.
 	 */
 	find : function (fun) {
-		fun = this._fun(fun);
 		do {
 			var ret = this.next();
-		} while (!fun(ret));
+		} while (!fun[fun.length > 1 ? "apply" : "call"](this, ret));
 		return ret;
 	},
 
@@ -353,10 +352,9 @@ Enumerator.prototype = {
 			});
 		} else
 		if (typeof(a) == "function") { // takewhile
-			a = this._fun(a);
 			return Enumerator(function () {
 				var ret = self.next();
-				if (a(ret))
+				if (a[a.length > 1 ? "apply" : "call"](this, ret))
 					return ret;
 				else
 					throw Enumerator.StopIteration;
@@ -389,8 +387,7 @@ Enumerator.prototype = {
 			return this;
 		} else
 		if (typeof(a) == "function") { // dropwhile
-			a = this._fun(a);
-			while (a(i = this.next())) true;
+			while (a[a.length > 1 ? "apply" : "call"](this, i = this.next())) true;
 			return Enumerator(function () {
 				this.next = self.next;
 				return i;
@@ -425,9 +422,8 @@ Enumerator.prototype = {
 	 * Receiver must be finite.
 	 */
 	every : function (fun) {
-		fun = this._fun(fun);
 		try {
-			while (!(fun(this.next()) === false)) 1;
+			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === false)) 1;
 			return false;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -449,9 +445,8 @@ Enumerator.prototype = {
 	 * Receiver must be finite.
 	 */
 	some : function (fun) {
-		fun = this._fun(fun);
 		try {
-			while (!(fun(this.next()) === true)) 1;
+			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === true)) 1;
 			return true;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -499,14 +494,6 @@ Enumerator.prototype = {
 	 */
 	stop : function () {
 		throw Enumerator.StopIteration;
-	},
-
-	_fun : function (fun) {
-		var self = this;
-		if (fun.length > 1)
-			return function (arg) { return fun.apply(self, arg) };
-		else
-			return function (arg) { return fun.call(self, arg) };
 	}
 };
 
