@@ -1,4 +1,5 @@
-// JSEnumerator 0.0.0 (c) Copyright (c) 2008 KAYAC Inc. ( http://www.kayac.com/ )
+// JSEnumerator 0.0.0 Copyright (c) 2008 KAYAC Inc. ( http://www.kayac.com/ )
+// http://coderepos.org/share/wiki/JSEnumerator
 function Enumerator (a) {
 	return (arguments.length > 1)       ? new Enumerator().initWithArray(arguments) :
 	       (this instanceof Enumerator) ? this.init(a) : new Enumerator(a);
@@ -8,13 +9,13 @@ Enumerator.prototype = {
 		if (arguments.length == 0) {
 			this.initWithArray([]);
 		} else {
+			if (arguments[0] && arguments[0].length) {
+				this.initWithArray(arguments[0]);
+			} else
 			if (typeof arguments[0] == "function") {
 				this.initWithFunction(arguments[0]);
 			} else
 			if (typeof arguments[0] == "object") {
-				if (arguments[0].hasOwnProperty("length")) {
-					this.initWithArray(arguments[0]);
-				} else
 				if (arguments[0] instanceof Enumerator) {
 					return arguments[0];
 				} else {
@@ -76,15 +77,26 @@ Enumerator.prototype = {
 	},
 
 	
-	map : function (fun, apply) {
+	map : function (fun) {
 		var ret = [];
 		try {
 			if (this.array) {
-				for (; this.pos < this.array.length; this.pos++) {
-					ret.push(fun[apply || "call"](this, this.array[this.pos]));
-				}
+				var a = this.array, c = this.pos, len = a.length - c, i = len % 8, type = (fun.length > 1) ? "apply" : "call";
+				if (i > 0) do {
+					ret.push(fun[type](this, a[c++]));
+				} while (--i);
+				i = parseInt(len >> 3);
+				if (i > 0) do {
+					ret.push(
+						fun[type](this, a[c++]), fun[type](this, a[c++]),
+						fun[type](this, a[c++]), fun[type](this, a[c++]),
+						fun[type](this, a[c++]), fun[type](this, a[c++]),
+						fun[type](this, a[c++]), fun[type](this, a[c++])
+					);
+				} while (--i);
+				this.pos = c;
 			} else {
-				while (1) ret.push(fun[apply || "call"](this, this.next()));
+				while (1) ret.push(fun[fun.length > 1 ? "apply" : "call"](this, this.next()));
 			}
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -93,10 +105,10 @@ Enumerator.prototype = {
 	},
 
 	
-	imap : function (fun, apply) {
+	imap : function (fun) {
 		var self = this;
 		return Enumerator(function () {
-			return fun[apply || "call"](this, self.next())
+			return fun[fun.length > 1 ? "apply" : "call"](this, self.next());
 		});
 	},
 
@@ -114,21 +126,21 @@ Enumerator.prototype = {
 	},
 
 	
-	iselect : function (fun, apply) {
+	iselect : function (fun) {
 		var self = this;
 		return Enumerator(function () {
 			do {
 				var val = self.next();
-			} while (!fun[apply || "call"](this, val));
+			} while (!fun[fun.length > 1 ? "apply" : "call"](this, val));
 			return val;
 		});
 	},
 
 	
-	find : function (fun, apply) {
+	find : function (fun) {
 		do {
 			var ret = this.next();
-		} while (!fun[apply || "call"](this, ret));
+		} while (!fun[fun.length > 1 ? "apply" : "call"](this, ret));
 		return ret;
 	},
 
@@ -171,7 +183,7 @@ Enumerator.prototype = {
 	},
 
 	
-	itake : function (a, apply) {
+	itake : function (a) {
 		var self = this;
 		if (typeof(a) == "number") {
 			var i = 0;
@@ -185,30 +197,29 @@ Enumerator.prototype = {
 		if (typeof(a) == "function") {
 			return Enumerator(function () {
 				var ret = self.next();
-				if (a[apply || "call"](this, ret))
+				if (a[a.length > 1 ? "apply" : "call"](this, ret))
 					return ret;
 				else
 					throw Enumerator.StopIteration;
 			});
-			return ret;
 		}
 	},
 
 
 	
-	take : function (a, apply) {
-		return this.itake(a, apply).toArray();
+	take : function (a) {
+		return this.itake(a).toArray();
 	},
 
 	
-	idrop : function (a, apply) {
+	idrop : function (a) {
 		var self = this, i;
 		if (typeof(a) == "number") {
 			for (i = 0; i < a; i++) this.next();
 			return this;
 		} else
 		if (typeof(a) == "function") {
-			while (a[apply || "call"](this, i = this.next())) true;
+			while (a[a.length > 1 ? "apply" : "call"](this, i = this.next())) true;
 			return Enumerator(function () {
 				this.next = self.next;
 				return i;
@@ -217,14 +228,14 @@ Enumerator.prototype = {
 	},
 
 	
-	drop : function (a, apply) {
-		return this.idrop(a, apply).toArray();
+	drop : function (a) {
+		return this.idrop(a).toArray();
 	},
 
 	
-	every : function (fun, apply) {
+	every : function (fun) {
 		try {
-			while (!(fun[apply || "call"](this, this.next()) === false)) 1;
+			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === false)) 1;
 			return false;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -233,9 +244,9 @@ Enumerator.prototype = {
 	},
 
 	
-	some : function (fun, apply) {
+	some : function (fun) {
 		try {
-			while (!(fun[apply || "call"](this, this.next()) === true)) 1;
+			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === true)) 1;
 			return true;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -252,6 +263,11 @@ Enumerator.prototype = {
 	countup : function () {
 		var start = this.next() || 0;
 		return Enumerator(function () { return start++ });
+	},
+
+	
+	stop : function () {
+		throw Enumerator.StopIteration;
 	}
 };
 
