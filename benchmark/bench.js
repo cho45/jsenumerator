@@ -152,6 +152,70 @@ benchmark("10element loop with index", {
 		}
 	}
 }).
+benchmark("100 element loop", {
+	"for" : function () {
+		var i = 0, list = [];
+		while (i < 100) list.push(i++);
+
+		for (var t = 0; t < LOOP; t++) {
+
+			for (var i = 0, len = list.length; i < len; i++) {
+				list[i];
+			}
+
+		}
+	},
+
+	"malaeach" : function () {
+		var i = 0, list = [];
+		while (i < 100) list.push(i++);
+		for (var t = 0; t < LOOP; t++) {
+			malaeach(list, function (item) {
+				item;
+			});
+		}
+	},
+
+	"MochiKit forEach" : function () {
+		var i = 0, list = [];
+		while (i < 100) list.push(i++);
+		for (var i = 0; i < LOOP; i++) {
+			forEach(list, function (item) {
+				item;
+			});
+		}
+	},
+
+	"jQuery each" : function () {
+		var i = 0, list = [];
+		while (i < 100) list.push(i++);
+		for (var i = 0; i < LOOP; i++) {
+			jQuery.each(list, function (index) {
+				this;
+			});
+		}
+	},
+
+	"prototype.js Array#each" : function () {
+		var i = 0, list = [];
+		while (i < 100) list.push(i++);
+		for (var i = 0; i < LOOP; i++) {
+			list.each(function (item) {
+				item;
+			});
+		}
+	},
+
+	"JSEnumerator each" : function () {
+		var i = 0, list = [];
+		while (i < 100) list.push(i++);
+		for (var i = 0; i < LOOP; i++) {
+			E(list).each(function (item) {
+				item;
+			});
+		}
+	}
+}).
 benchmark("cycle and imap and toArray", {
 	"MochiKit" : function () {
 		var i = MochiKit.Iter;

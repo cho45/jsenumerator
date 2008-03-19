@@ -166,9 +166,20 @@ Enumerator.prototype = {
 		var ret = [];
 		try {
 			if (this.array) {
-				for (; this.pos < this.array.length; this.pos++) {
-					ret.push(fun[fun.length > 1 ? "apply" : "call"](this, this.array[this.pos]));
-				}
+				var a = this.array, c = this.pos, len = a.length - c, i = len % 8, type = (fun.length > 1) ? "apply" : "call";
+				if (i > 0) do {
+					ret.push(fun[type](this, a[c++]));
+				} while (--i);
+				i = parseInt(len >> 3);
+				if (i > 0) do {
+					ret.push(
+						fun[type](this, a[c++]), fun[type](this, a[c++]),
+						fun[type](this, a[c++]), fun[type](this, a[c++]),
+						fun[type](this, a[c++]), fun[type](this, a[c++]),
+						fun[type](this, a[c++]), fun[type](this, a[c++])
+					);
+				} while (--i);
+				this.pos = c;
 			} else {
 				while (1) ret.push(fun[fun.length > 1 ? "apply" : "call"](this, this.next()));
 			}
