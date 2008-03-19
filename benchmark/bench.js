@@ -37,8 +37,8 @@ benchmark("10element loop", {
 	"malaeach" : function () {
 		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 		for (var t = 0; t < LOOP; t++) {
-			malaeach(list, function (i) {
-				i;
+			malaeach(list, function (item) {
+				item;
 			});
 		}
 	},
@@ -46,8 +46,8 @@ benchmark("10element loop", {
 	"MochiKit forEach" : function () {
 		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 		for (var i = 0; i < LOOP; i++) {
-			forEach(list, function (i) {
-				i;
+			forEach(list, function (item) {
+				item;
 			});
 		}
 	},
@@ -55,8 +55,8 @@ benchmark("10element loop", {
 	"jQuery each" : function () {
 		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 		for (var i = 0; i < LOOP; i++) {
-			jQuery.each(list, function (i) {
-				i;
+			jQuery.each(list, function (index) {
+				this;
 			});
 		}
 	},
@@ -64,8 +64,8 @@ benchmark("10element loop", {
 	"prototype.js Array#each" : function () {
 		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 		for (var i = 0; i < LOOP; i++) {
-			list.each(function (i) {
-				i;
+			list.each(function (item) {
+				item;
 			});
 		}
 	},
@@ -73,8 +73,82 @@ benchmark("10element loop", {
 	"JSEnumerator each" : function () {
 		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 		for (var i = 0; i < LOOP; i++) {
-			E(list).each(function (i) {
-				i;
+			E(list).each(function (item) {
+				item;
+			});
+		}
+	}
+}).
+benchmark("10element loop with index", {
+	"for" : function () {
+		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+		for (var t = 0; t < LOOP; t++) {
+
+			for (var i = 0, len = list.length; i < len; i++) {
+				[list[i], i];
+			}
+
+		}
+	},
+
+	"malaeach" : function () {
+		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+		for (var t = 0; t < LOOP; t++) {
+
+			var index = 0;
+			malaeach(list, function (item) {
+				[item, index++];
+			});
+		}
+	},
+
+	"MochiKit forEach" : function () {
+		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+		for (var i = 0; i < LOOP; i++) {
+			var index = 0;
+			forEach(list, function (item) {
+				[item, index++];
+			});
+		}
+	},
+
+	"jQuery each" : function () {
+		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+		for (var i = 0; i < LOOP; i++) {
+			jQuery.each(list, function (index) {
+				[this, index];
+			});
+		}
+	},
+
+	"prototype.js Array#each" : function () {
+		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+		for (var i = 0; i < LOOP; i++) {
+
+			var index = 0;
+			list.each(function (item) {
+				[item, index++];
+			});
+		}
+	},
+
+	"JSEnumerator each" : function () {
+		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+		for (var i = 0; i < LOOP; i++) {
+
+			var index = 0;
+			E(list).each(function (item) {
+				[item, index++];
+			});
+		}
+	},
+
+	"JSEnumerator withIndex().each" : function () {
+		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+		for (var i = 0; i < LOOP; i++) {
+			E(list).withIndex().each(function (item, index) {
+				[item, index];
 			});
 		}
 	}
