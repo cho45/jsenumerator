@@ -5,11 +5,41 @@ E = Enumerator;
 LOOP = 1000;
 
 
+function malaeach (a, f) {
+	var c = 0;
+	var len = a.length;
+	var i = len % 8;
+	if (i>0) do {
+		f(a[c],c++,a);
+	} while (--i);
+	i = parseInt(len >> 3);
+	if (i>0) do {
+		f(a[c],c++,a);f(a[c],c++,a);
+		f(a[c],c++,a);f(a[c],c++,a);
+		f(a[c],c++,a);f(a[c],c++,a);
+		f(a[c],c++,a);f(a[c],c++,a);
+	} while (--i);
+}
+
 benchmark("10element loop", {
 	"for" : function () {
 		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-		for (var i = 0; i < LOOP; i++) {
-			list[i];
+
+		for (var t = 0; t < LOOP; t++) {
+
+			for (var i = 0, len = list.length; i < len; i++) {
+				list[i];
+			}
+
+		}
+	},
+
+	"malaeach" : function () {
+		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+		for (var t = 0; t < LOOP; t++) {
+			malaeach(list, function (i) {
+				i;
+			});
 		}
 	},
 
@@ -23,7 +53,7 @@ benchmark("10element loop", {
 	},
 
 	"jQuery each" : function () {
-		var list = E(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 		for (var i = 0; i < LOOP; i++) {
 			jQuery.each(list, function (i) {
 				i;
