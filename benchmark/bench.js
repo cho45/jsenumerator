@@ -96,9 +96,8 @@ benchmark("10element loop with index", {
 		var list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 		for (var t = 0; t < LOOP; t++) {
 
-			var index = 0;
-			malaeach(list, function (item) {
-				[item, index++];
+			malaeach(list, function (item, index) {
+				[item, index];
 			});
 		}
 	},
