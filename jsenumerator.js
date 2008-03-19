@@ -170,7 +170,7 @@ Enumerator.prototype = {
 					ret.push(fun[fun.length > 1 ? "apply" : "call"](this, this.array[this.pos]));
 				}
 			} else {
-				while (1) ret.push(fun(this.next()));
+				while (1) ret.push(fun[fun.length > 1 ? "apply" : "call"](this, this.next()));
 			}
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;

@@ -398,6 +398,10 @@ tests("countup", function () {
 tests("withIndex", function () {
 	expect("Basic", [["a", 0], ["b", 1], ["c", 2]], E(["a", "b", "c"]).withIndex().toArray());
 	expect("Basic", [["a", 10], ["b", 11], ["c", 12]], E(["a", "b", "c"]).withIndex(10).toArray());
+
+	expect("Basic", ["a", "b", "c"], E(["a", "b", "c"]).withIndex().map(function (item, index) {
+		return item;
+	}));
 }).
 tests("stop", function () {
 	expect("Basic", ["a"], E(["a", "b", "c"]).map(function (i) {

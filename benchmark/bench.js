@@ -200,7 +200,7 @@ benchmark("reduce", {
 			});
 		}
 	},
-	"MochiKit (reduce/islice/count)" : function () {
+	"MochiKit (reduce (islice (count)))" : function () {
 		var i = MochiKit.Iter;
 		var b = MochiKit.Base;
 		for (var l = 0; l < LOOP; l++) {
