@@ -67,22 +67,22 @@ function Enumerator (a) {
 Enumerator.prototype = {
 	init : function () {
 		if (arguments.length == 0) {
-			this.initWithArray([]);
+			return this.initWithArray([]);
 		} else {
 			if (arguments[0] && arguments[0].length) {
-				this.initWithArray(arguments[0]);
+				return this.initWithArray(arguments[0]);
 			} else
 			if (typeof arguments[0] == "function") {
-				this.initWithFunction(arguments[0]);
+				return this.initWithFunction(arguments[0]);
 			} else
 			if (typeof arguments[0] == "object") {
 				if (arguments[0] instanceof Enumerator) {
 					return arguments[0];
 				} else {
-					this.initWithHash(arguments[0]);
+					return this.initWithHash(arguments[0]);
 				}
 			} else {
-				this.initWithArray([arguments[0]]);
+				return this.initWithArray([arguments[0]]);
 			}
 		}
 	},
@@ -371,6 +371,7 @@ Enumerator.prototype = {
 					throw Enumerator.StopIteration;
 			});
 		}
+		throw ArgumentErrro("expect number or function");
 	},
 
 
@@ -398,12 +399,13 @@ Enumerator.prototype = {
 			return this;
 		} else
 		if (typeof(a) == "function") { // dropwhile
-			while (a[a.length > 1 ? "apply" : "call"](this, i = this.next())) true;
+			while (a[a.length > 1 ? "apply" : "call"](this, i = this.next())) {};
 			return Enumerator(function () {
 				this.next = self.next;
 				return i;
 			});
 		}
+		throw ArgumentErrro("expect number or function");
 	},
 
 	/* function Enumerator.prototype.drop (n) //=> Array
@@ -434,7 +436,7 @@ Enumerator.prototype = {
 	 */
 	every : function (fun) {
 		try {
-			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === false)) 1;
+			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === false)) {};
 			return false;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -457,7 +459,7 @@ Enumerator.prototype = {
 	 */
 	some : function (fun) {
 		try {
-			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === true)) 1;
+			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === true)) {};
 			return true;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
