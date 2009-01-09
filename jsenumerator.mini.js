@@ -6,17 +6,17 @@ return(arguments.length>1)? new Enumerator().initWithArray(arguments):
 Enumerator.prototype={
 init:function(){
 if(arguments.length==0){
-this.initWithArray([]);}else{
+return this.initWithArray([]);}else{
 if(arguments[0] && arguments[0].length){
-this.initWithArray(arguments[0]);}else
+return this.initWithArray(arguments[0]);}else
 if(typeof arguments[0]=="function"){
-this.initWithFunction(arguments[0]);}else
+return this.initWithFunction(arguments[0]);}else
 if(typeof arguments[0]=="object"){
 if(arguments[0] instanceof Enumerator){
 return arguments[0];}else{
-this.initWithHash(arguments[0]);}
+return this.initWithHash(arguments[0]);}
 }else{
-this.initWithArray([arguments[0]]);}
+return this.initWithArray([arguments[0]]);}
 }
 },
 initWithFunction:function(fun){
@@ -94,26 +94,26 @@ return Enumerator(function(){
 var ret=self.next();if(a[a.length>1 ? "apply":"call"](this,ret))
 return ret;else
 throw Enumerator.StopIteration;});}
-},
+throw ArgumentErrro("expect number or function");},
 take:function(a){
 return this.itake(a).toArray();},
 idrop:function(a){
 var self=this,i;if(typeof(a)=="number"){
 for(i=0;i<a;i++)this.next();return this;}else
 if(typeof(a)=="function"){
-while(a[a.length>1 ? "apply":"call"](this,i=this.next()))true;return Enumerator(function(){
+while(a[a.length>1 ? "apply":"call"](this,i=this.next())){};return Enumerator(function(){
 this.next=self.next;return i;});}
-},
+throw ArgumentErrro("expect number or function");},
 drop:function(a){
 return this.idrop(a).toArray();},
 every:function(fun){
 try{
-while(!(fun[fun.length>1 ? "apply":"call"](this,this.next())===false))1;return false;}catch(e){
+while(!(fun[fun.length>1 ? "apply":"call"](this,this.next())===false)){};return false;}catch(e){
 if(e !=Enumerator.StopIteration)throw e;return true;}
 },
 some:function(fun){
 try{
-while(!(fun[fun.length>1 ? "apply":"call"](this,this.next())===true))1;return true;}catch(e){
+while(!(fun[fun.length>1 ? "apply":"call"](this,this.next())===true)){};return true;}catch(e){
 if(e !=Enumerator.StopIteration)throw e;return false;}
 },
 withIndex:function(start){
