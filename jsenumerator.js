@@ -1,8 +1,9 @@
 /* Header::
  * JSEnumerator
  *
- * Version = "0.0.0"
- * Copyright (C) KAYAC Inc.
+ * Version = "0.1.0"
+ * Copyright (C) 2012 cho45 <cho45@lowreal.net> ( http://www.lowreal.net/ )
+ * Copyright (C) 2008 KAYAC Inc.
  *
  *
  * Most functions ('i' prefixed and some) are lazy for evaluation.
