@@ -8,7 +8,8 @@ Download
 
 * https://raw.github.com/cho45/jsenumerator/master/jsenumerator.js
 
-== License ==
+License
+-------
 
 MIT. See header of https://raw.github.com/cho45/jsenumerator/master/jsenumerator.js
 

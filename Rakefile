@@ -4,9 +4,9 @@ require "rake"
 require "rake/clean"
 require "shipit"
 
-CLEAN.include ["jsenumerator.{mini,nodoc}.js"]
+CLEAN.include ["jsenumerator.nodoc.js"]
 
-RELEASES = %w(jsenumerator.mini.js jsenumerator.nodoc.js jsenumerator.js)
+RELEASES = %w(jsenumerator.nodoc.js jsenumerator.js)
 VERS     = File.read("jsenumerator.js")[/Version = "(\d+\.\d+\.\d+)"/, 1]
 
 COPYRIGHT = <<EOS
@@ -39,12 +39,6 @@ end
 desc "Create all release files"
 task :release => RELEASES
 
-file "jsenumerator.mini.js" do
-	cont = File.read("jsenumerator.js")
-	File.open("jsenumerator.mini.js", "w") do |f|
-		f.puts mini(cont)
-	end
-end
 
 file "jsenumerator.nodoc.js" do
 	cont = File.read("jsenumerator.js")

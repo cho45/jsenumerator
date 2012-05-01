@@ -1,9 +1,12 @@
-/* Header::
+/*
+ * @fileOverview JSEnumerator
+ * @author       cho45@lowreal.net
+ * @version      0.1.0
+ * @license
  * JSEnumerator
  *
- * Version = "0.1.0"
  * Copyright (C) 2012 cho45 <cho45@lowreal.net> ( http://www.lowreal.net/ )
- * Copyright (C) 2008 KAYAC Inc.
+ * Copyright (C) 2008 KAYAC Inc. ( http://www.kayac.com/ )
  *
  *
  * Most functions ('i' prefixed and some) are lazy for evaluation.
@@ -67,7 +70,7 @@ function Enumerator (a) {
 }
 Enumerator.prototype = {
 	init : function () {
-		if (arguments.length == 0) {
+		if (arguments.length === 0) {
 			return this.initWithArray([]);
 		} else {
 			if (arguments[0] && arguments[0].length) {
@@ -154,7 +157,7 @@ Enumerator.prototype = {
 	},
 
 	/* function Enumerator.prototype.each (fun) //=> Array
-	/* function Enumerator.prototype.map  (fun) //=> Array
+	 * function Enumerator.prototype.map  (fun) //=> Array
 	 *
 	 * Receiver must be finite.
 	 *
@@ -171,7 +174,7 @@ Enumerator.prototype = {
 				if (i > 0) do {
 					ret.push(fun[type](this, a[c++]));
 				} while (--i);
-				i = parseInt(len >> 3);
+				i = len >> 3;
 				if (i > 0) do {
 					ret.push(
 						fun[type](this, a[c++]), fun[type](this, a[c++]),
@@ -226,7 +229,7 @@ Enumerator.prototype = {
 	},
 
 	/* function Enumerator.prototype.ifilter (fun) //=> Enumerator
-	/* function Enumerator.prototype.iselect (fun) //=> Enumerator
+	 * function Enumerator.prototype.iselect (fun) //=> Enumerator
 	 *
 	 * Return Enumerator of filtered list with `fun` of receiver.
 	 *
@@ -239,8 +242,8 @@ Enumerator.prototype = {
 	iselect : function (fun) {
 		var self = this;
 		return Enumerator(function () {
-			do {
-				var val = self.next();
+			var val; do {
+				val = self.next();
 			} while (!fun[fun.length > 1 ? "apply" : "call"](this, val));
 			return val;
 		});
@@ -259,14 +262,14 @@ Enumerator.prototype = {
 	 * Receiver must be finite.
 	 */
 	find : function (fun) {
-		do {
-			var ret = this.next();
+		var ret; do {
+			ret = this.next();
 		} while (!fun[fun.length > 1 ? "apply" : "call"](this, ret));
 		return ret;
 	},
 
 	/* function Enumerator.prototype.inject (fun [, init]) //=> any
-	/* function Enumerator.prototype.reduce (fun [, init]) //=> any
+	 * function Enumerator.prototype.reduce (fun [, init]) //=> any
 	 *
 	 * Fold receiver to one value.
 	 *
@@ -301,7 +304,7 @@ Enumerator.prototype = {
 	 */
 	max : function (fun) {
 		if (!fun) fun = function (a, b) { return a - b };
-		var t =  this.toArray().sort(fun)
+		var t =  this.toArray().sort(fun);
 		return t[t.length-1];
 	},
 
@@ -317,7 +320,7 @@ Enumerator.prototype = {
 	 */
 	min : function (fun) {
 		if (!fun) fun = function (a, b) { return a - b };
-		var t =  this.toArray().sort(fun)
+		var t =  this.toArray().sort(fun);
 		return t[0];
 	},
 
@@ -400,7 +403,7 @@ Enumerator.prototype = {
 			return this;
 		} else
 		if (typeof(a) == "function") { // dropwhile
-			while (a[a.length > 1 ? "apply" : "call"](this, i = this.next())) {};
+			while (a[a.length > 1 ? "apply" : "call"](this, i = this.next())) {}
 			return Enumerator(function () {
 				this.next = self.next;
 				return i;
@@ -437,7 +440,7 @@ Enumerator.prototype = {
 	 */
 	every : function (fun) {
 		try {
-			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === false)) {};
+			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === false)) {}
 			return false;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -460,7 +463,7 @@ Enumerator.prototype = {
 	 */
 	some : function (fun) {
 		try {
-			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === true)) {};
+			while (!(fun[fun.length > 1 ? "apply" : "call"](this, this.next()) === true)) {}
 			return true;
 		} catch (e) {
 			if (e != Enumerator.StopIteration) throw e;
@@ -516,5 +519,6 @@ Enumerator.prototype.each    = Enumerator.prototype.map;
 Enumerator.prototype.inject  = Enumerator.prototype.reduce;
 Enumerator.prototype.ifilter = Enumerator.prototype.iselect;
 Enumerator.StopIteration     = new Error("StopIteration");
+this.Enumerator = Enumerator;
 
 
