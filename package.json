@@ -1,0 +1,21 @@
+{
+  "author": "cho45 <cho45@lowreal.net> (http://www.lowreal.net/)",
+  "name": "jsenumerator",
+  "description": "A light-weight library for list or enumeration.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/cho45/jsenumerator",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cho45/jsenumerator.git"
+  },
+  "main": "jsenumerator.js",
+  "scripts": {
+    "test": "node test-node.js"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
