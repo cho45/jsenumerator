@@ -32,7 +32,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+; // no warnings for uglify.js
 /* function Enumerator () //=> constructor
  *
  * Code:
