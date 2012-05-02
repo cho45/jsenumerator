@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Enumerator</title>
+		<script src="http://cdn.washer-in-the-rye.com/google-code-prettify/prettify.js"></script>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="http://cdn.washer-in-the-rye.com/google-code-prettify/desert.css"/>
+		<link rel="stylesheet" type="text/css" href="template/doc.css"/>
+	</head>
+	<body>
+		<header>
+			<h1>Object Enumerator</h1>
+			<dl>
+				
+			</dl>
+
+			<table>
+				<caption>Constructor</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							<a href="#Enumerator">Enumerator</a>(obj)
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			
+			<table>
+				<caption>Instance Methods</caption>
+				<thead>
+					<tr>
+						<th scope="col">Method Attributes</th>
+						<th scope="col">Method Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#chain">chain</a>(enums)
+							<span class="type">//=> Enumerator</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#countup">countup</a>()
+							<span class="type">//=> Enumerator</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#cycle">cycle</a>()
+							<span class="type">//=> Enumerator</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#drop">drop</a>(n)
+							<span class="type">//=> Array</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#every">every</a>(fun)
+							<span class="type">//=> boolean</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#find">find</a>(fun)
+							<span class="type">//=> *</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#idrop">idrop</a>(n)
+							<span class="type">//=> Enumerator</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#imap">imap</a>(fun)
+							<span class="type">//=> Enumerator</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#iselect">iselect</a>(fun)
+							<span class="type">//=> Enumerator</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#itake">itake</a>(n)
+							<span class="type">//=> Enumerator</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#izip">izip</a>(args)
+							<span class="type">//=> Enumerator</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#map">map</a>(fun)
+							<span class="type">//=> Array</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#max">max</a>(fun)
+							<span class="type">//=> *</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#min">min</a>(fun)
+							<span class="type">//=> *</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#reduce">reduce</a>(fun, init)
+							<span class="type">//=> *</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#some">some</a>(fun)
+							<span class="type">//=> boolean</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#stop">stop</a>()
+							
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#take">take</a>(n)
+							<span class="type">//=> Array</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#toArray">toArray</a>()
+							<span class="type">//=> Array</span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="attr">&nbsp;</td>
+						<td class="description">
+							Enumerator#<a href="#Enumerator#withIndex">withIndex</a>(start)
+							<span class="type">//=> Enumerator</span>
+						</td>
+					</tr>
+				
+				</tbody>
+			</table>
+
+		
+
+		
+			
+			
+		
+		</header>
+
+
+		<section>
+			<h1>Constructor</h1>
+			
+
+			<section id="Enumerator" class="value">
+
+			<h1>
+				<span class="attr">
+				
+				</span>
+			
+				<span class="name">Enumerator</span
+				><span class="signature">(obj)</span>
+
+				
+			</h1>
+
+			<header>
+				
+					<section class="parameters">
+						<h1>Parameters</h1>
+						<dl>
+						
+							<dt>
+							<span class="name">obj</span>
+							<span class="type"> : Array|Object|function():*</span>
+							<span class="option">
+								
+							</span>
+							</dt>
+							<dd>A definition of enumerator.</dd>
+						
+						</dl>
+					</section>
+				
+
+				
+				
+
+				
+			</header>
+
+			<section class="description">
+				
+			</section>
+
+			
+			<pre class="code prettyprint lang-js">    E = Enumerator;
+
+    // Array
+    E([1, 2, 3]).reduce(function (r, i) {
+        return r + i
+    });         // Sum up.
+    //=> 6
+
+    // Hash
+    E({"a":1, "b":2}).reduce(function (r, i) {
+        r[i[1]] = i[0];
+        return r
+    }, {});     // Inverted hash.
+    //=> ({1:"a",2:"b"})
+
+    // Function (infinite list/generator)
+    E(function () {
+         return Math.random();
+    }).take(5); // Random sequence.
+
+    // arguments
+    (function () {
+        return E(arguments).toArray();
+    })(1, 2, 3);
+    //=> [1, 2, 3]</pre>
+			
+
+			<footer>
+			
+			</footer>
+
+			</section>
+		</section>
+
+		
+		<section>
+			<h1>Instance Methods</h1>
+
+			
+			<section id="Enumerator#chain" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">chain</span
+					><span class="signature">(enums)</span>
+
+					<span class="type">//=> Enumerator</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">enums</span>
+								<span class="type"> : ...[*]</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Enumerator</span>
+							<span class="desc">new Enumerator</span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Chain some Enumerator to one
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E(1, 2, 3).chain(E(4, 5, 6)).toArray(); //=> [1, 2, 3, 4, 5, 6]</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#countup" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">countup</span
+					><span class="signature">()</span>
+
+					<span class="type">//=> Enumerator</span>
+				</h1>
+
+				<header>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Enumerator</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Returns infinite list start with `n`.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E().countup().take(3);   //=> [0, 1, 2]
+    E(10).countup().take(3); //=> [10, 11, 12]</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#cycle" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">cycle</span
+					><span class="signature">()</span>
+
+					<span class="type">//=> Enumerator</span>
+				</h1>
+
+				<header>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Enumerator</span>
+							<span class="desc">new Enumerator.</span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Return cycled infinite list of receiver.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E(0, 1).cycle().take(10); //=> [0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
+    E(0).cycle().take(5);     //=> [0, 0, 0, 0, 0]</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#drop" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">drop</span
+					><span class="signature">(n)</span>
+
+					<span class="type">//=> Array</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">n</span>
+								<span class="type"> : number</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Array</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Drop `n` values from the first of receivera and return Array.
+
+Receiver must be finite.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E().countup().itake(10).drop(5); //=> [5, 6, 7, 8, 9]</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#every" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">every</span
+					><span class="signature">(fun)</span>
+
+					<span class="type">//=> boolean</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">fun</span>
+								<span class="type"> : function(*):boolean</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">boolean</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Evaluate `fun` with the items and when every items are all true,
+this function returns true.
+(Actually, this function returns false immediately if `fun` returns false.)
+You may also know this as `all`.
+
+Receiver must be finite.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E(1, 1, 1).every(function (i) { return i == 1 }); //=> true
+    E(1, 1, 0).every(function (i) { return i == 1 }); //=> false</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#find" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">find</span
+					><span class="signature">(fun)</span>
+
+					<span class="type">//=> *</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">fun</span>
+								<span class="type"> : function(*):boolean</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">*</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Return a item which is true with `fun`.
+Receiver must be finite.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E({a:1}, {a:2}, {a:3}).find(function (i) {
+        return i.a == 2;
+    });
+    //=> ({a:2});</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#idrop" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">idrop</span
+					><span class="signature">(n)</span>
+
+					<span class="type">//=> Enumerator</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">n</span>
+								<span class="type"> : number</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Enumerator</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Drop `n` values from the first of receiver and return Enumerator.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E().countup().idrop(2).take(10); //=> [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#imap" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">imap</span
+					><span class="signature">(fun)</span>
+
+					<span class="type">//=> Enumerator</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">fun</span>
+								<span class="type"> : function(*):*</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Enumerator</span>
+							<span class="desc">new Enumerator</span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Return Enumerator its apply `fun` each value.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E(1, 2, 3).imap(function (i) { return i * i }).toArray(); //=> [1, 4, 9]
+    E(1, 2, 3).cycle().imap(function (i) { return i * i }).take(6); //=> [1, 4, 9, 1, 4, 9]</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#iselect" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">iselect</span
+					><span class="signature">(fun)</span>
+
+					<span class="type">//=> Enumerator</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">fun</span>
+								<span class="type"> : function(*):boolean</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Enumerator</span>
+							<span class="desc">new Enumerator</span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Return Enumerator of filtered list with `fun` of receiver.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E().countup().iselect(function (i) {
+        return i % 2 == 0;
+    }).take(10);
+    //=> [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#itake" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">itake</span
+					><span class="signature">(n)</span>
+
+					<span class="type">//=> Enumerator</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">n</span>
+								<span class="type"> : number</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Enumerator</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Take `n` values from first of receiver and return Enumerator.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E().countup().itake(10).drop(2); //=> [2, 3, 4, 5, 6, 7, 8, 9]</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#izip" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">izip</span
+					><span class="signature">(args)</span>
+
+					<span class="type">//=> Enumerator</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">args</span>
+								<span class="type"> : ..[*]</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Enumerator</span>
+							<span class="desc">new Enumerator</span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Return Enumerator of list which contains each items self and arguments.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E(1, 2, 3, 4, 5).izip([1, 2, 3], ["a", "b", "c"]).toArray();
+    //=> [[1, 1, "a"], [2, 2, "b"], [3, 3, "c"]]</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#map" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">map</span
+					><span class="signature">(fun)</span>
+
+					<span class="type">//=> Array</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">fun</span>
+								<span class="type"> : function(*):*</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Array</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Call passed `fun` and return values returned by `fun`.
+
+Receiver must be finite.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E(1, 2, 3).map(function (i) { return i * i }); //=> [1, 4, 9]</pre>
+				
+				
+
+				<footer>
+				
+					<section class="see">
+						<h1>See</h1>
+						<ul>
+							
+							<li><a href="#map">map</a></li>
+							
+						</ul>
+					</section>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#max" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">max</span
+					><span class="signature">(fun)</span>
+
+					<span class="type">//=> *</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">fun</span>
+								<span class="type"> : function(*):number</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">*</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					If you want to take max value of some numbers,
+you should use Math.max.
+
+Receiver must be finite.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E(1, 5, 3).max(); //=> 5
+    E({k:1}, {k:5}, {k:3}).max(function (a, b) {
+        return a.k - b.k;
+    });
+    //=> ({k:5})</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#min" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">min</span
+					><span class="signature">(fun)</span>
+
+					<span class="type">//=> *</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">fun</span>
+								<span class="type"> : function(*):number</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">*</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					If you want to take max value of some numbers,
+you should use Math.max.
+
+Receiver must be finite.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E(1, 5, 3).min(); //=> 1</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#reduce" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">reduce</span
+					><span class="signature">(fun, init)</span>
+
+					<span class="type">//=> *</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">fun</span>
+								<span class="type"> : function(*):*</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+								<dt>
+								<span class="name">init</span>
+								<span class="type"> : *</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd>initial value</dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">*</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Fold receiver to one value.
+Receiver must be finite.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E(1).countup().itake(3).reduce(function (r, i) {
+        return r + i;
+    });
+    //=> 6</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#some" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">some</span
+					><span class="signature">(fun)</span>
+
+					<span class="type">//=> boolean</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">fun</span>
+								<span class="type"> : function(*):boolean</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">boolean</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Evaluate `fun` with the items and some items return true,
+this function returns true.
+(Actually, this function returns true immediately if `fun` returns true.)
+You may also know this as `any`.
+
+Receiver must be finite.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E(0, 1, 0).some(function (i) { return i == 1 }); //=> true
+    E(0, 0, 0).some(function (i) { return i == 1 }); //=> false</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#stop" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">stop</span
+					><span class="signature">()</span>
+
+					
+				</h1>
+
+				<header>
+					
+
+					
+					
+
+					
+
+					
+				</header>
+
+				<section class="description">
+					This is a convenient function for stop iteration.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">   E(1, 2, 3).map(function (i) {
+       if (i == 2) this.stop();
+   });
+   //=> [1, 2]</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#take" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">take</span
+					><span class="signature">(n)</span>
+
+					<span class="type">//=> Array</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">n</span>
+								<span class="type"> : number</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Array</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Take `n` values from the first of receiver and return Array.
+
+Receiver must be finite.
+				</section>
+				
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#toArray" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">toArray</span
+					><span class="signature">()</span>
+
+					<span class="type">//=> Array</span>
+				</h1>
+
+				<header>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Array</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Expand all values to one Array.
+Receiver must be finate.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E().countup().itake(5).toArray(); //=> [0, 1, 2, 3, 4]
+    E(1, 2, 3).toArray(); //=> [1, 2, 3]</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+			<section id="Enumerator#withIndex" class="method">
+				<h1>
+					<span class="attr">
+					
+					</span>
+				
+					<span class="memberOf">Enumerator#</span
+					><span class="name">withIndex</span
+					><span class="signature">(start)</span>
+
+					<span class="type">//=> Enumerator</span>
+				</h1>
+
+				<header>
+					
+						<section class="parameters">
+							<h1>Parameters</h1>
+							<dl>
+							
+								<dt>
+								<span class="name">start</span>
+								<span class="type"> : number</span>
+								<span class="option">
+									
+								</span>
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						</section>
+					
+
+					
+					
+
+					
+
+					
+						<section class="return">
+							<h1>Returns</h1>
+							
+							<span class="type">Enumerator</span>
+							<span class="desc"></span>
+							
+						</section>
+					
+				</header>
+
+				<section class="description">
+					Return Enumerator of list which has receiver item and index.
+				</section>
+				
+				
+				<pre class="code prettyprint lang-js">    E("a", "b", "c").withIndex().each(function (item, index) {
+        log(item);  // a, b, c
+        log(index); // 0, 1, 2
+    });</pre>
+				
+				
+
+				<footer>
+				
+				</footer>
+			</section>
+			
+		</section>
+		
+
+		
+
+		
+		<script type="text/javascript">prettyPrint()</script>
+	</body>
+</html>
+

@@ -1,4 +1,4 @@
-/*
+/**
  * @fileOverview JSEnumerator
  * @author       cho45@lowreal.net
  * @version      0.1.0
@@ -33,10 +33,8 @@
  * THE SOFTWARE.
  */ ; // no warnings for uglify.js
 
-/* function Enumerator () //=> constructor
- *
- * Code:
- *
+/**
+ * @example
  *     E = Enumerator;
  *
  *     // Array
@@ -63,12 +61,18 @@
  *     })(1, 2, 3);
  *     //=> [1, 2, 3]
  *
+ * @constructor
+ * @param {Array|Object|function():*} obj A definition of enumerator.
  */
 function Enumerator (a) {
 	return (arguments.length > 1)       ? new Enumerator().initWithArray(arguments) :
 	       (this instanceof Enumerator) ? this.init(a) : new Enumerator(a);
 }
 Enumerator.prototype = {
+	/**
+	 * @private
+	 * @return {Enumerator}
+	 */
 	init : function () {
 		if (arguments.length === 0) {
 			return this.initWithArray([]);
@@ -91,11 +95,19 @@ Enumerator.prototype = {
 		}
 	},
 
+	/**
+	 * @private
+	 * @param {Function} fun
+	 */
 	initWithFunction : function (fun) {
 		this.next = fun;
 		return this;
 	},
 
+	/**
+	 * @private
+	 * @param {Array} array
+	 */
 	initWithArray : function (array) {
 		this.array = array;
 		this.pos   = 0;
@@ -109,6 +121,10 @@ Enumerator.prototype = {
 		return this;
 	},
 
+	/**
+	 * @private
+	 * @param {Object} hash
+	 */
 	initWithHash : function (hash) {
 		var arr = [];
 		for (var k in hash) if (hash.hasOwnProperty(k)) {
@@ -118,27 +134,28 @@ Enumerator.prototype = {
 		return this;
 	},
 
-	/* function Enumerator.prototype.toArray () //=> Array
-	 *
+	/** 
 	 * Expand all values to one Array.
+	 * Receiver must be finate.
 	 *
-	 * Code:
+	 * @example
 	 *     E().countup().itake(5).toArray(); //=> [0, 1, 2, 3, 4]
 	 *     E(1, 2, 3).toArray(); //=> [1, 2, 3]
 	 *
-	 * Receiver must be finate.
+	 * @return {Array}
 	 */
 	toArray : function () {
 		return this.map(function (x) { return x });
 	},
 
-	/* function Enumerator.prototype.cycle () //=> Enumerator
-	 *
+	/**
 	 * Return cycled infinite list of receiver.
 	 *
-	 * Code:
+	 * @example
 	 *     E(0, 1).cycle().take(10); //=> [0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
 	 *     E(0).cycle().take(5);     //=> [0, 0, 0, 0, 0]
+	 *
+	 * @return {Enumerator} new Enumerator.
 	 */
 	cycle : function () {
 		var self  = this, cache = [];
@@ -156,15 +173,17 @@ Enumerator.prototype = {
 		});
 	},
 
-	/* function Enumerator.prototype.each (fun) //=> Array
-	 * function Enumerator.prototype.map  (fun) //=> Array
+	/**
+	 * Call passed `fun` and return values returned by `fun`.
 	 *
 	 * Receiver must be finite.
 	 *
-	 * Call passed `fun` and return values returned by `fun`.
-	 *
-	 * Code:
+	 * @example
 	 *     E(1, 2, 3).map(function (i) { return i * i }); //=> [1, 4, 9]
+	 *
+	 * @param {function(*):*} fun
+	 * @return {Array}
+	 * @see map
 	 */
 	map : function (fun) {
 		var ret = [];
@@ -193,13 +212,15 @@ Enumerator.prototype = {
 		return ret;
 	},
 
-	/* function Enumerator.prototype.imap ([fun]) //=> Enumerator
-	 *
+	/**
 	 * Return Enumerator its apply `fun` each value.
 	 *
-	 * Code:
+	 * @example
 	 *     E(1, 2, 3).imap(function (i) { return i * i }).toArray(); //=> [1, 4, 9]
 	 *     E(1, 2, 3).cycle().imap(function (i) { return i * i }).take(6); //=> [1, 4, 9, 1, 4, 9]
+	 *
+	 * @param {function(*):*} fun
+	 * @return {Enumerator} new Enumerator
 	 */
 	imap : function (fun) {
 		var self = this;
@@ -208,13 +229,15 @@ Enumerator.prototype = {
 		});
 	},
 
-	/* function Enumerator.prototype.izip ([p, q...]) //=> Enumerator
-	 *
+	/**
 	 * Return Enumerator of list which contains each items self and arguments.
 	 *
-	 * Code:
+	 * @example
 	 *     E(1, 2, 3, 4, 5).izip([1, 2, 3], ["a", "b", "c"]).toArray();
 	 *     //=> [[1, 1, "a"], [2, 2, "b"], [3, 3, "c"]]
+	 *
+	 * @param {..[*]} args
+	 * @return {Enumerator} new Enumerator
 	 */
 	izip : function (/* args */) {
 		var eles = [this];
@@ -228,16 +251,17 @@ Enumerator.prototype = {
 		});
 	},
 
-	/* function Enumerator.prototype.ifilter (fun) //=> Enumerator
-	 * function Enumerator.prototype.iselect (fun) //=> Enumerator
-	 *
+	/**
 	 * Return Enumerator of filtered list with `fun` of receiver.
 	 *
-	 * Code:
+	 * @example
 	 *     E().countup().iselect(function (i) {
 	 *         return i % 2 == 0;
 	 *     }).take(10);
 	 *     //=> [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+	 *
+	 * @param {function(*):boolean} fun
+	 * @return {Enumerator} new Enumerator
 	 */
 	iselect : function (fun) {
 		var self = this;
@@ -249,17 +273,18 @@ Enumerator.prototype = {
 		});
 	},
 
-	/* function Enumerator.prototype.find (fun) //=> Enumerator
-	 *
+	/**
 	 * Return a item which is true with `fun`.
+	 * Receiver must be finite.
 	 *
-	 * Code:
+	 * @example
 	 *     E({a:1}, {a:2}, {a:3}).find(function (i) {
 	 *         return i.a == 2;
 	 *     });
 	 *     //=> ({a:2});
 	 *
-	 * Receiver must be finite.
+	 * @param {function(*):boolean} fun
+	 * @return {*}
 	 */
 	find : function (fun) {
 		var ret; do {
@@ -268,18 +293,19 @@ Enumerator.prototype = {
 		return ret;
 	},
 
-	/* function Enumerator.prototype.inject (fun [, init]) //=> any
-	 * function Enumerator.prototype.reduce (fun [, init]) //=> any
-	 *
+	/**
 	 * Fold receiver to one value.
+	 * Receiver must be finite.
 	 *
-	 * Code:
+	 * @example
 	 *     E(1).countup().itake(3).reduce(function (r, i) {
 	 *         return r + i;
 	 *     });
 	 *     //=> 6
 	 *
-	 * Receiver must be finite.
+	 * @param {function(*):*} fun
+	 * @param {*} init initial value
+	 * @return {*}
 	 */
 	reduce : function (fun, init) {
 		var self = this;
@@ -288,19 +314,21 @@ Enumerator.prototype = {
 		return rval;
 	},
 
-	/* function Enumerator.prototype.max ([fun]) //=> any
-	 *
+	/**
 	 * If you want to take max value of some numbers,
 	 * you should use Math.max.
 	 *
-	 * Code:
+	 * Receiver must be finite.
+	 *
+	 * @example
 	 *     E(1, 5, 3).max(); //=> 5
 	 *     E({k:1}, {k:5}, {k:3}).max(function (a, b) {
 	 *         return a.k - b.k;
 	 *     });
 	 *     //=> ({k:5})
 	 *
-	 * Receiver must be finite.
+	 * @param {function(*):number} fun
+	 * @return {*}
 	 */
 	max : function (fun) {
 		if (!fun) fun = function (a, b) { return a - b };
@@ -308,15 +336,17 @@ Enumerator.prototype = {
 		return t[t.length-1];
 	},
 
-	/* function Enumerator.prototype.min ([fun]) //=> any
-	 *
+	/**
 	 * If you want to take max value of some numbers,
 	 * you should use Math.max.
 	 *
-	 * Code:
+	 * Receiver must be finite.
+	 *
+	 * @example
 	 *     E(1, 5, 3).min(); //=> 1
 	 *
-	 * Receiver must be finite.
+	 * @param {function(*):number} fun
+	 * @return {*}
 	 */
 	min : function (fun) {
 		if (!fun) fun = function (a, b) { return a - b };
@@ -324,13 +354,14 @@ Enumerator.prototype = {
 		return t[0];
 	},
 
-	/* function Enumerator.prototype.chain (enum [, enum...]) //=> Enumerator
+	/**
+	 * Chain some Enumerator to one
 	 *
-	 * Chain some Enumerator to one;
-	 *
-	 * Code:
+	 * @example
 	 *     E(1, 2, 3).chain(E(4, 5, 6)).toArray(); //=> [1, 2, 3, 4, 5, 6]
 	 *
+	 * @param {...[*]} enums
+	 * @return {Enumerator} new Enumerator
 	 */
 	chain : function (enums) {
 		var f = this, a = Enumerator(arguments).imap(function (i) {
@@ -347,13 +378,14 @@ Enumerator.prototype = {
 		});
 	},
 
-	/* function Enumerator.prototype.itake (n) //=> Enumerator
-	 *
+	/**
 	 * Take `n` values from first of receiver and return Enumerator.
 	 *
-	 * Code:
+	 * @example
 	 *     E().countup().itake(10).drop(2); //=> [2, 3, 4, 5, 6, 7, 8, 9]
 	 *
+	 * @param {number} n
+	 * @return {Enumerator}
 	 */
 	itake : function (a) {
 		var self = this;
@@ -379,22 +411,26 @@ Enumerator.prototype = {
 	},
 
 
-	/* function Enumerator.prototype.take (n) //=> Array
-	 *
+	/**
 	 * Take `n` values from the first of receiver and return Array.
 	 *
 	 * Receiver must be finite.
+	 *
+	 * @param {number} n
+	 * @return {Array}
 	 */
 	take : function (a) {
 		return this.itake(a).toArray();
 	},
 
-	/* function Enumerator.prototype.idrop (n) //=> Enumerator
-	 *
+	/**
 	 * Drop `n` values from the first of receiver and return Enumerator.
 	 *
-	 * Code:
+	 * @example
 	 *     E().countup().idrop(2).take(10); //=> [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+	 *
+	 * @param {number} n
+	 * @return {Enumerator}
 	 */
 	idrop : function (a) {
 		var self = this, i;
@@ -412,31 +448,35 @@ Enumerator.prototype = {
 		throw ArgumentErrro("expect number or function");
 	},
 
-	/* function Enumerator.prototype.drop (n) //=> Array
-	 *
+	/**
 	 * Drop `n` values from the first of receivera and return Array.
 	 *
-	 * Code:
+	 * Receiver must be finite.
+	 *
+	 * @example
 	 *     E().countup().itake(10).drop(5); //=> [5, 6, 7, 8, 9]
 	 *
-	 * Receiver must be finite.
+	 * @param {number} n
+	 * @return {Array}
 	 */
 	drop : function (a) {
 		return this.idrop(a).toArray();
 	},
 
-	/* function Enumerator.prototype.every (fun) //=> Boolean
-	 *
+	/**
 	 * Evaluate `fun` with the items and when every items are all true,
 	 * this function returns true.
 	 * (Actually, this function returns false immediately if `fun` returns false.)
 	 * You may also know this as `all`.
 	 *
-	 * Code:
+	 * Receiver must be finite.
+	 *
+	 * @example
 	 *     E(1, 1, 1).every(function (i) { return i == 1 }); //=> true
 	 *     E(1, 1, 0).every(function (i) { return i == 1 }); //=> false
 	 *
-	 * Receiver must be finite.
+	 * @param {function(*):boolean} fun
+	 * @return {boolean}
 	 */
 	every : function (fun) {
 		try {
@@ -448,18 +488,20 @@ Enumerator.prototype = {
 		}
 	},
 
-	/* function Enumerator.prototype.some (fun) //=> Boolean
-	 *
+	/**
 	 * Evaluate `fun` with the items and some items return true,
 	 * this function returns true.
 	 * (Actually, this function returns true immediately if `fun` returns true.)
 	 * You may also know this as `any`.
 	 *
-	 * Code:
+	 * Receiver must be finite.
+	 *
+	 * @example
 	 *     E(0, 1, 0).some(function (i) { return i == 1 }); //=> true
 	 *     E(0, 0, 0).some(function (i) { return i == 1 }); //=> false
 	 *
-	 * Receiver must be finite.
+	 * @param {function(*):boolean} fun
+	 * @return {boolean}
 	 */
 	some : function (fun) {
 		try {
@@ -471,43 +513,44 @@ Enumerator.prototype = {
 		}
 	},
 
-	/* function Enumerator.prototype.withIndex ([start=0]) //=> Enumerator
-	 *
+	/**
 	 * Return Enumerator of list which has receiver item and index.
 	 *
-	 * Code:
+	 * @example
 	 *     E("a", "b", "c").withIndex().each(function (item, index) {
 	 *         log(item);  // a, b, c
 	 *         log(index); // 0, 1, 2
 	 *     });
+	 *
+	 * @param {number} start
+	 * @return {Enumerator}
 	 */
 	withIndex : function (start) {
 		return this.izip(E(start || 0).countup());
 	},
 
-	/* function Enumerator.prototype.countup ([n=0]) //=> Enumerator
-	 *
+	/**
 	 * Returns infinite list start with `n`.
 	 *
-	 * Code:
+	 * @example
 	 *     E().countup().take(3);   //=> [0, 1, 2]
 	 *     E(10).countup().take(3); //=> [10, 11, 12]
+	 *
+	 * @return {Enumerator}
 	 */
 	countup : function () {
 		var start = this.next() || 0;
 		return Enumerator(function () { return start++ });
 	},
 
-	/* function Enumerator.prototype.stop () //=> throw Enumerator.StopIteration
-	 *
+	/**
 	 * This is a convenient function for stop iteration.
 	 *
-	 * Code:
+	 * @example
 	 *    E(1, 2, 3).map(function (i) {
 	 *        if (i == 2) this.stop();
 	 *    });
 	 *    //=> [1, 2]
-	 *
 	 */
 	stop : function () {
 		throw Enumerator.StopIteration;

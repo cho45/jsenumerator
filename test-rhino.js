@@ -97,9 +97,9 @@ function doctest (filename) {
 			comments.push(m.replace(/^\s*\*[ \n]/gm, ""));
 			return _;
 		})
-		comments.join("\n").replace(/Code:\n(?:    .+\n)+/g, function (code) {
+		comments.join("\n").replace(/@example\n(?:    .+\n)+/g, function (code) {
 			try {
-			code = code.replace(/^Code:|^    /gm, "");
+			code = code.replace(/^@example|^    /gm, "");
 			var codeblock = [];
 			var lines     = code.split(/\n/);
 			for (var i = 0; i < lines.length; i++) {
